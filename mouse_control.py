@@ -28,20 +28,25 @@ while cap.isOpened():
 
     if results.multi_hand_landmarks:
         for hand_landmarks in results.multi_hand_landmarks:
+
             # akhd l2i7datiyat dyal no9at x:y 
+            middle_finger_mcp = hand_landmarks.landmark[mp_hands.HandLandmark.MIDDLE_FINGER_MCP]
             index_finger_tip = hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_TIP]
             thumb_tip = hand_landmarks.landmark[mp_hands.HandLandmark.THUMB_TIP]
             
             height, width, _ = frame.shape
 
+            middle_finger_x,middle_finger_y=int(middle_finger_mcp.x * width), int(middle_finger_mcp.y * height)
+
             tip_x, tip_y = int(index_finger_tip.x * width), int(index_finger_tip.y * height)
             thumb_x, thumb_y = int(thumb_tip.x * width), int(thumb_tip.y * height)
 
            # ta7wil dyal l2i7datiyat bach ijiw mazyan m3a x:y dyal pyautogui
-            mouse_x=int(screen_width / width * tip_x)
-            mouse_y=int(screen_height / height * tip_y)
+            mouse_x=int(screen_width / width * middle_finger_x)
+            mouse_y=int(screen_height / height * middle_finger_y)
             
             pg.moveTo(mouse_x, mouse_y)
+
             
             
             # Rasm dyal no9at
@@ -50,8 +55,8 @@ while cap.isOpened():
 
             if tip_x - thumb_x<2:
                 # Rasm dyal no9at blhmar mali tclicki
-                cv2.circle(frame, (tip_x, tip_y), 8, (0, 0, 255), -1)
-                cv2.circle(frame, (thumb_x, thumb_y), 8, (0, 0, 255), -1)
+                cv2.circle(frame, (tip_x, tip_y), 5, (0, 0, 255), -1)
+                cv2.circle(frame, (thumb_x, thumb_y), 5, (0, 0, 255), -1)
                 pg.click()
                 
 
